@@ -1,0 +1,13 @@
+# Exclude Python bytecode files
+*.pyc
+__pycache__/
+
+# Exclude temp files
+*.tmp
+*.temp
+*~
+*.swp
+*.bak
+*.old
+.DS_Store
+Thumbs.db
