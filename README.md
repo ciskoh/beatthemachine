@@ -1,4 +1,4 @@
-Gradient Descent Educational Game - Technical Specifications (Revised)
+# Gradient Descent Educational Game - Technical Specifications (Revised)
 Project Overview
 An interactive web application that teaches gradient descent concepts through manual linear regression fitting. Students adjust slope and intercept parameters to fit a line to scattered data points while visualizing the loss function evolution with color-coded progress.
 Technical Stack
@@ -21,10 +21,10 @@ beatthemachine/
 ├── .gitignore
 └── README.md
 
-Core Features Specification
-1. Data Generation Module - data_generator.py
+## Core Features Specification
+### 1. Data Generation Module - data_generator.py
 
-Function: generate_dataset()
+#### Function: generate_dataset()
 
 Parameters:
 
@@ -50,16 +50,16 @@ Implementation Notes:
     Ensure generated points stay roughly within 0-10 range for x and y axis
     Store true parameters for calculating optimal RMSE
 
-2. Loss Calculation Module - loss_functions.py
+### 2. Loss Calculation Module - loss_functions.py
 
-Function: calculate_rmse(x, y, slope, intercept)
+#### Function: calculate_rmse(x, y, slope, intercept)
 
     Takes x array, y array, and current parameter values
     Calculates Root Mean Square Error between actual y and predicted y values
     Returns single float value representing RMSE
 
-3. Visualization Module - visualizations.py
-Function: create_scatter_plot(data, current_slope, current_intercept)
+### 3. Visualization Module - visualizations.py
+#### Function: create_scatter_plot(data, current_slope, current_intercept)
 
 Returns a Plotly figure object
 
@@ -81,7 +81,7 @@ Layout requirements:
     Show current RMSE value in corner as text annotation
     Hover info on points showing x, y coordinates rounded to 2 decimal places
 
-Function: create_loss_plot(history)
+#### Function: create_loss_plot(history)
 
 Parameters:
 
@@ -114,8 +114,8 @@ Layout requirements:
     X-axis starts at 1
     Hover info showing: Attempt number, RMSE value, slope, intercept
 
-4. Main Application - app.py
-Session State Management
+### 4. Main Application - app.py
+#### Session State Management
 
 Initialize and maintain the following in session state:
 
@@ -125,7 +125,7 @@ Initialize and maintain the following in session state:
     best_rmse: Float tracking minimum RMSE achieved
     best_params: Dictionary with best slope and intercept values
 
-Layout Structure
+#### Layout Structure
 
 Page Configuration:
 
@@ -133,7 +133,7 @@ Page Configuration:
     Page title: Gradient Descent Intuition Builder
     Page icon: chart emoji
 
-Sidebar Components in order:
+#### Sidebar Components in order:
 
     Title: Controls displayed as header
     Parameter Input Section:
@@ -158,15 +158,15 @@ Sidebar Components in order:
         Number of attempts as integer
         Improvement percentage from first attempt
 
-Main Area Layout:
+#### Main Area Layout:
 
     Two column layout
     Left column: 60 percent width for scatter plot
     Right column: 40 percent width for loss plot
 
-Interaction Flow
+### Interaction Flow
 
-On Submit Attempt button click:
+#### On Submit Attempt button click:
 
     Read current slider values for slope and intercept
     Calculate RMSE using current parameters
@@ -176,7 +176,7 @@ On Submit Attempt button click:
     Refresh both plots with new data
     Display success message if RMSE below threshold
 
-On New Dataset button click:
+#### On New Dataset button click:
 
     Generate new dataset with random parameters
     Clear all history
@@ -185,30 +185,30 @@ On New Dataset button click:
     Reset best RMSE tracking
     Refresh both plots
 
-User Feedback Features
+### User Feedback Features
 
-Success Criteria:
+#### Success Criteria:
 
     When RMSE is within 0.5 of optimal: Show success message
     When RMSE is best so far: Show improvement message
     Display messages using Streamlit success or info components
 
-Information Displays:
+#### Information Displays:
 
     Info box at top explaining objective
     Current parameter values shown near sliders
     Best parameters shown in statistics section
 
-5. Configuration - config.py
+### 5. Configuration - config.py
 
-Default values section:
+#### Default values section:
 
     DEFAULT_N_POINTS = 30
     DEFAULT_NOISE_LEVEL = 0.3
     DEFAULT_X_RANGE = (0, 10)
     DEFAULT_Y_RANGE = (0, 10)
 
-UI settings section:
+#### UI settings section:
 
     PLOT_WIDTH = 600
     PLOT_HEIGHT = 500
@@ -216,21 +216,21 @@ UI settings section:
     SLIDER_SLOPE_RANGE = (-5.0, 5.0)
     SLIDER_INTERCEPT_RANGE = (-10.0, 10.0)
 
-Success thresholds section:
+#### Success thresholds section:
 
     SUCCESS_THRESHOLD = 0.5
     GOOD_THRESHOLD = 1.0
     ACCEPTABLE_THRESHOLD = 2.0
 
-Color scheme section:
+#### Color scheme section:
 
     DATA_POINTS_COLOR = blue hex value
     REGRESSION_LINE_COLOR = red hex value
     GRADIENT_START_COLOR = red RGB tuple
     GRADIENT_END_COLOR = blue RGB tuple
 
-Deployment Instructions
-Local Development
+### Deployment Instructions
+#### Local Development
 
 Install requirements using pip install -r requirements.txt then run streamlit run app.py from project directory
 Streamlit Cloud Deployment
@@ -242,16 +242,16 @@ Streamlit Cloud Deployment
     Set Python version to 3.9 in advanced settings
     Deploy and share public URL
 
-Performance Considerations
+#### Performance Considerations
 
     Use st.cache_data decorator on dataset generation
     Limit history storage to last 100 attempts
     Use container placeholders for smooth plot updates
     Minimize redundant calculations
 
-Testing Checklist
+### Testing Checklist
 
-Functionality tests:
+#### Functionality tests:
 
     Dataset generates within specified ranges
     RMSE calculation produces correct values
@@ -260,7 +260,7 @@ Functionality tests:
     New Dataset clears all appropriate state
     Submit Attempt adds to history correctly
 
-Visual tests:
+#### Visual tests:
 
     Plots display at correct dimensions
     Color gradient transitions smoothly
@@ -268,14 +268,14 @@ Visual tests:
     Hover information displays correctly
     Layout responsive on different screen sizes
 
-Educational value tests:
+#### Educational value tests:
 
     Interface clearly shows relationship between parameters and fit
     Loss evolution demonstrates optimization concept
     Feedback helps guide parameter selection
 
-Documentation Requirements
-Code Documentation
+### Documentation Requirements
+#### Code Documentation
 
 All functions require docstrings with description, parameters, and return values. Type hints should be used for all function parameters and returns. Complex calculations need inline comments explaining logic.
 User Documentation
