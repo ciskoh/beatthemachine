@@ -6,7 +6,7 @@ Creates interactive Plotly figures for data visualization and loss tracking.
 import plotly.graph_objects as go
 import numpy as np
 from typing import Dict, List, Any
-
+from typing import Dict, List, Any, Iterable, Optional
 
 # ============================================================================
 # VISUALIZATION CONFIGURATION - All visual settings in one place
@@ -18,13 +18,13 @@ PLOT_CONFIG = {
     'height': 500,
     
     # Background and grid settings
-    'plot_bgcolor': 'white',
-    'grid_color': 'lightgray',
+    'plot_bgcolor': 'black',
+    'grid_color': 'darkgray',
     'grid_width': 1,
     
     # Axis settings
-    'x_range': [0, 15],
-    'y_range': [0, 15],
+    'x_range': [0, 11],
+    'y_range': [0, 11],
     'fixed_range': True,  # Prevent zooming
     
     # Data points styling
@@ -38,7 +38,7 @@ PLOT_CONFIG = {
     # Regression line styling
     'regression_line': {
         'color': 'red',
-        'width': 2,
+        'width': 3,
         'dash': None,  # solid line
     },
     
@@ -71,8 +71,8 @@ PLOT_CONFIG = {
             'x_pos': 0.5,
             'y_pos': 9.5,
             'font_size': 14,
-            'font_color': 'black',
-            'bg_color': 'rgba(255, 255, 255, 0.8)',
+            'font_color': 'lightgrey',
+            'bg_color': 'black',
             'border_color': 'black',
             'border_width': 1,
             'decimal_places': 2,
@@ -81,7 +81,7 @@ PLOT_CONFIG = {
             'x_pos': 9.5,
             'y_pos': 0.5,
             'font_size': 12,
-            'font_color': 'black',
+            'font_color': 'lightgrey',
             'bg_color': 'rgba(255, 255, 255, 0.8)',
             'border_color': 'black',
             'border_width': 1,
@@ -479,6 +479,122 @@ def create_comparison_plot(
     
     return fig
 
+
+def create_loss_landscape_3d(
+    slopes: Iterable[float],
+    intercepts: Iterable[float], 
+    scores: Iterable[float],
+    plot_config: Optional[Dict[str, Any]] = None
+) -> go.Figure:
+    """
+    Create a 3D visualization of the loss landscape in parameter space.
+    
+    This function creates an interactive 3D plot showing how RMSE varies
+    with different combinations of slope and intercept parameters.
+    
+    Parameters
+    ----------
+    slopes : Iterable[float]
+        Array of slope values (x-axis)
+    intercepts : Iterable[float]
+        Array of intercept values (y-axis)
+    scores : Iterable[float]
+        Array of RMSE scores (z-axis)
+    plot_config : Dict[str, Any], optional
+        Optional configuration dictionary. If None, uses default settings.
+    
+    Returns
+    -------
+    go.Figure
+        Plotly 3D figure object
+    """
+    # Default configuration for 3D plot
+    if plot_config is None:
+        plot_config = {
+            'width': 700,
+            'height': 600,
+            'marker_size': 5,
+            'marker_color': 'viridis',
+            'marker_opacity': 0.8,
+            'title': 'Loss Landscape (Parameter Space)',
+            'x_label': 'Slope (m)',
+            'y_label': 'Intercept (b)',
+            'z_label': 'RMSE (Loss)',
+            'show_colorbar': True,
+            'colorbar_title': 'RMSE',
+            'camera': {
+                'eye': {'x': 1.5, 'y': 1.5, 'z': 1.5},
+                'center': {'x': 0, 'y': 0, 'z': 0}
+            }
+        }
+    
+    # Convert to numpy arrays for easier handling
+    slopes = np.array(slopes)
+    intercepts = np.array(intercepts)
+    scores = np.array(scores)
+    
+    # Create 3D scatter plot
+    fig = go.Figure()
+    
+    # Add 3D scatter trace
+    fig.add_trace(go.Scatter3d(
+        x=slopes,
+        y=intercepts,
+        z=scores,
+        mode='markers+lines',
+        marker=dict(
+            size=plot_config.get('marker_size', 5),
+            color=scores,  # Color by RMSE value
+            colorscale=plot_config.get('marker_color', 'viridis'),
+            opacity=plot_config.get('marker_opacity', 0.8),
+            showscale=plot_config.get('show_colorbar', True),
+            colorbar=dict(
+                title=plot_config.get('colorbar_title', 'RMSE'),
+                thickness=15,
+                len=0.7,
+                x=1.02
+            ),
+            line=dict(width=0)
+        ),
+        text=[f'Slope: {s:.2f}<br>Intercept: {i:.2f}<br>RMSE: {r:.3f}' 
+              for s, i, r in zip(slopes, intercepts, scores)],
+        hovertemplate='%{text}<extra></extra>',
+        name='Parameter Points'
+    ))
+    
+    # Update layout
+    fig.update_layout(
+        title=plot_config.get('title', 'Loss Landscape'),
+        width=plot_config.get('width', 700),
+        height=plot_config.get('height', 600),
+        scene=dict(
+            xaxis=dict(
+                title=plot_config.get('x_label', 'Slope'),
+                gridcolor='lightgray',
+                showbackground=True,
+                backgroundcolor='rgba(240, 240, 240, 0.9)'
+            ),
+            yaxis=dict(
+                title=plot_config.get('y_label', 'Intercept'),
+                gridcolor='lightgray',
+                showbackground=True,
+                backgroundcolor='rgba(240, 240, 240, 0.9)'
+            ),
+            zaxis=dict(
+                title=plot_config.get('z_label', 'RMSE'),
+                gridcolor='lightgray',
+                showbackground=True,
+                backgroundcolor='rgba(240, 240, 240, 0.9)'
+            ),
+            camera=plot_config.get('camera', {
+                'eye': {'x': 1.5, 'y': 1.5, 'z': 1.5}
+            })
+        ),
+        showlegend=False,
+        margin=dict(l=0, r=0, t=40, b=0)
+    )
+    
+    return fig
 
 # Example usage and testing
 if __name__ == "__main__":
