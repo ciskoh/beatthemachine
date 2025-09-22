@@ -167,8 +167,10 @@ def main():
     
     # Header
     st.title(" Gradient Descent Intuition Builder")
-    
-    # Info box at top
+    st.markdown("""
+    Welcome to the Gradient Descent Intuition Builder! This interactive tool allows you to manually adjust
+    the parameters of a linear regression model and see how it affects the fit to the data.
+    """)
     with st.expander(" How to Play", expanded=False):
         st.info(config.TUTORIAL_CONTENT['objective'] + 
                 config.TUTORIAL_CONTENT['instructions'] + 
@@ -176,11 +178,11 @@ def main():
     
     # Sidebar controls
     with st.sidebar:
-        st.header("🎮 Controls")
+        st.header(" Controls")
         
         
         # Parameter inputs
-        st.subheader("📐 Parameters")
+        st.subheader(" Parameters")
         
         current_slope = st.slider(
             "Slope (m)",
@@ -216,7 +218,7 @@ def main():
         
         
         # Action buttons
-        st.subheader("🎯 Actions")
+        st.subheader("Actions")
         
         col1, col2 = st.columns(2)
         
@@ -250,7 +252,7 @@ def main():
         
         
         # Statistics display
-        st.subheader("📊 Statistics")
+        st.subheader("Statistics")
         
         if st.session_state.history:
             current_rmse = st.session_state.history[-1]['rmse']
@@ -303,7 +305,7 @@ def main():
     col1, col2 = st.columns([3, 2])
     
     with col1:
-        st.subheader("📈 Linear Regression Fit")
+        st.subheader(" Linear Regression Fit")
         
         # Determine what to show based on state
         if st.session_state.show_line and st.session_state.history:
@@ -328,7 +330,7 @@ def main():
     
     with col2:
         # 2D loss plot on top
-        st.subheader("📉 Loss Evolution")
+        st.subheader("Loss Evolution")
         
         # Create loss plot
         fig_loss = create_loss_plot(st.session_state.history)
@@ -339,7 +341,7 @@ def main():
         st.plotly_chart(fig_loss, use_container_width=True)
         
         # 3D plot below
-        st.subheader("🗺️ Loss Landscape")
+        st.subheader("Parameter space")
         
         if st.session_state.history:
             # Extract data for 3D plot

@@ -107,7 +107,7 @@ MESSAGES = {
 
 TUTORIAL_CONTENT = {
     'objective': """
-    **Objective**: Find the best line (y = mx + b) that fits the data points by minimizing RMSE (Root Mean Square Error).
+    **Objective**: Find the best line (y = mx + b) that fits the data points by minimizing RMSE (Root Mean Square Error). Use the loss evolution plot and the parameter space plot to guide your adjustments
     """,
     
     'instructions': """

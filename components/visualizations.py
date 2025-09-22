@@ -15,7 +15,7 @@ from typing import Dict, List, Any, Iterable, Optional
 PLOT_CONFIG = {
     # General plot dimensions
     'width': 600,
-    'height': 500,
+    'height': 600,
     
     # Background and grid settings
     'plot_bgcolor': 'black',
@@ -82,7 +82,7 @@ PLOT_CONFIG = {
             'y_pos': 0.5,
             'font_size': 12,
             'font_color': 'lightgrey',
-            'bg_color': 'rgba(255, 255, 255, 0.8)',
+            'bg_color': 'black',
             'border_color': 'black',
             'border_width': 1,
             'decimal_places': 3,
