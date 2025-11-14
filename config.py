@@ -247,3 +247,6 @@ ABSOLUTE_MIN_SLOPE = -10.0
 ABSOLUTE_MAX_SLOPE = 10.0
 ABSOLUTE_MIN_INTERCEPT = -20.0
 ABSOLUTE_MAX_INTERCEPT = 20.0
+
+# Machine Learning Training Configuration
+MACHINE_TRAINING_DELAY = 0.5  # seconds between epochs for visualization
