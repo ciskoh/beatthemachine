@@ -130,7 +130,10 @@ def create_scatter_plot(
     data: Dict[str, np.ndarray], 
     current_slope: float = None, 
     current_intercept: float = None,
-    current_rmse: float = None
+    current_rmse: float = None,
+    machine_slope=None, 
+    machine_intercept=None, 
+    machine_rmse=None
 ) -> go.Figure:
     """
     Create an interactive scatter plot with data points and optional regression line.
@@ -169,9 +172,9 @@ def create_scatter_plot(
     ))
     
     # Add regression line only if slope and intercept are provided
+    x_line = np.array(PLOT_CONFIG['x_range'])
     if current_slope is not None and current_intercept is not None:
         # Generate points for regression line
-        x_line = np.array(PLOT_CONFIG['x_range'])
         y_line = current_slope * x_line + current_intercept
         
         # Add regression line
@@ -188,7 +191,17 @@ def create_scatter_plot(
             hoverinfo='skip'
         ))
     
+    if machine_slope is not None and machine_intercept is not None:
+        y_pred_machine = machine_slope * x_line + machine_intercept
+        fig.add_trace(go.Scatter(
+            x=x_line, y=y_pred_machine,
+            mode='lines',
+            name='Machine Fit',
+            line=dict(color='red', width=2),
+            hovertemplate='Machine: y = %.2fx + %.2f<extra></extra>' % (machine_slope, machine_intercept)
+        ))
     # Update layout
+
     fig.update_layout(
         title=PLOT_CONFIG['titles']['scatter_plot'],
         xaxis=dict(
@@ -245,10 +258,33 @@ def create_scatter_plot(
             bordercolor=rmse_config['border_color'],
             borderwidth=rmse_config['border_width']
         )
-    
+    if machine_slope is not None and machine_intercept is not None:
+        fig.add_annotation(
+            x=0.02, y=0.88,
+            xref="paper", yref="paper",
+            text=f"Machine: y = {machine_slope:.2f}x + {machine_intercept:.2f}",
+            showarrow=False,
+            font=dict(color="red", size=12),
+            bgcolor="white",
+            bordercolor="red",
+            borderwidth=1
+        )
+        
+        if machine_rmse is not None:
+                fig.add_annotation(
+                    x=0.98, y=0.88,
+                    xref="paper", yref="paper",
+                    text=f"Machine RMSE: {machine_rmse:.3f}",
+                    showarrow=False,
+                    font=dict(color="red", size=12),
+                    bgcolor="white",
+                    bordercolor="red",
+                    borderwidth=1,
+                    xanchor='right'
+                )
     return fig
 
-def create_loss_plot(history: List[Dict[str, Any]]) -> go.Figure:
+def create_loss_plot(history: List[Dict[str, Any]], machine_history=None) -> go.Figure:
     """
     Create an interactive plot showing RMSE evolution over attempts with color gradient.
     
@@ -369,7 +405,21 @@ def create_loss_plot(history: List[Dict[str, Any]]) -> go.Figure:
                 xanchor='right',
                 yanchor='top'
             )
-    
+    if machine_history and len(machine_history) > 0:
+        machine_epochs = [item['epoch'] for item in machine_history]
+        machine_rmse_values = [item['rmse'] for item in machine_history]
+        
+        # Add machine line plot
+        fig.add_trace(go.Scatter(
+            x=machine_epochs,
+            y=machine_rmse_values,
+            mode='lines+markers',
+            name='Machine Training',
+            line=dict(color='red', width=2),
+            marker=dict(color='red', size=8),
+            hovertemplate='Machine Epoch %{x}<br>RMSE: %{y:.3f}<extra></extra>'
+        ))
+        
     return fig
 
 
