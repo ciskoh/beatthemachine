@@ -423,6 +423,18 @@ def main():
             # Show empty 3D plot with message
             st.info("Make your first attempt to see the loss landscape!")
 
+    # Footer with attribution
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style='text-align: center; color: gray; padding: 10px;'>
+            Made by <a href='https://ciskoh.github.io' target='_blank'>Matteo Jucker Riva</a> 
+            for Constructor Learning
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 
 if __name__ == "__main__":
     main()
