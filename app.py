@@ -174,10 +174,10 @@ def main():
     init_session_state()
 
     # Header
-    st.title(" Gradient Descent Intuition Builder")
+    st.title(" Beat The Machine v2.0!  ")
     st.markdown(
         """
-    Welcome to the Gradient Descent Intuition Builder! This interactive tool allows you to manually adjust
+    Welcome to the Beat The Machine! a Gradient Descent intuition builder. This interactive tool allows you to manually adjust
     the parameters of a linear regression model and see how it affects the fit to the data.
     """
     )
